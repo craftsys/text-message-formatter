@@ -1,0 +1,129 @@
+---
+layout: main
+title: Format Your WhatsApp Messages
+---
+
+<div
+  class="min-h-screen bg-whatsapp-chat-bg dark:bg-whatsapp-chat-bg-dark dark:text-white flex flex-col"
+>
+  <header class="text-center pt-8 mb-6 container px-4 mx-auto">
+    <h1 class="text-2xl mb-4">Format your messages for WhatsApp</h1>
+    <ul class="flex justify-center text-xs space-x-4 opacity-90">
+      <li>*bold* &#8594; <b>bold</b></li>
+      <li>_italic_ &#8594; <i>italic</i></li>
+      <li>~strikethrough~ &#8594; <s>strikethrough</s></li>
+      <li>```monospace``` &#8594; <code>monospace</code></li>
+    </ul>
+  </header>
+  <div
+    class="flex-1 flex mx-auto justify-center pb-8 container px-4"
+    style="min-height: 300px"
+  >
+    <div class="max-w-lg flex-1 flex">
+      <textarea
+        id="input"
+        class="p-4 border-none outline-none rounded-lg w-full flex-1 block min-h-full bg-white dark:bg-whatsapp-input-bg-dark"
+        placeholder="To make something bold, use * e.g. *bold*"
+      ></textarea>
+    </div>
+    <div class="px-4 flex items-center opacity-40">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        class="w-8 h-8"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+        />
+      </svg>
+    </div>
+    <div
+      id="output"
+      class="max-w-sm whitespace-pre-wrap flex-1 bg-whatsapp-outgoing-chat-bg dark:bg-whatsapp-outgoing-chat-bg-dark dark:text-white p-4 rounded-lg"
+    >
+      <div class="opacity-80">
+        To make something bold, use * e.g.<b>bold</b>
+      </div>
+    </div>
+  </div>
+  <div class="container text-center mx-auto pb-8">
+    <div>
+      <div class="uppercase text-xs mb-1 inline-block mr-4 opacity-70">
+        Sponsored by
+      </div>
+      <a href="https://sembark.com" class="font-medium"
+        ><img
+          src="https://assets.sembark.com/favicons/favicon.svg"
+          class="inline-block w-6 h-6 bg-white rounded-full p-px"
+        />
+        Sembark: The Travel Software</a
+      >
+      <p class="text-xs mt-2 tracking-wide">
+        Automatically creates beautiful WhatsApp messages for all your travel
+        operations.
+      </p>
+    </div>
+  </div>
+</div>
+<script>
+  const input = document.getElementById("input");
+  const output = document.getElementById("output");
+  const WHATSAPP_TAGS = [
+    ["*", "b"],
+    ["_", "i"],
+    ["~", "s"],
+    ["```", "code"],
+  ];
+  function whatsappPreview(text) {
+    // sanitise text
+    let html = text
+      .replace(/&/g, "&")
+      .replace(/>/g, "&gt;")
+      .replace(/</g, "&lt;")
+      .replace(/\n/g, "<br />");
+    WHATSAPP_TAGS.forEach(([tagSymbol, tagHtmlElm]) => {
+      // replace all the tagSymbol with tagHtmlElm
+      // e.g. *this* is *something* => <b>this</b> is <b>something</b>
+      let start = html.indexOf(tagSymbol),
+        end = html.indexOf(tagSymbol, start + 1);
+      while (start > -1 && end > -1) {
+        html =
+          html.substring(0, start) +
+          "<" +
+          tagHtmlElm +
+          ">" +
+          html.substring(start + tagSymbol.length, end) +
+          "</" +
+          tagHtmlElm +
+          ">" +
+          html.substring(end + tagSymbol.length);
+        start = html.indexOf(tagSymbol, end + 1);
+        end = html.indexOf(tagSymbol, start + 1);
+      }
+    });
+    return html;
+  }
+
+  input.addEventListener("input", function (e) {
+    const value = e.currentTarget.value;
+    const formatedText = whatsappPreview(value);
+    output.innerHTML = formatedText;
+  });
+</script>
+<footer class="py-12 bg-coolGray-800 text-white">
+  <div class="container mx-auto">
+    <div class="text-sm">
+      <div class="uppercase mb-4">Disclaimer</div>
+      <p class="opacity-70">
+        WhatsApp is a property of Facebook and reserves all its rights. This
+        tool is unaffiliated with Facebook and is mearly to provides a
+        convenient way to format WhatsApp messages.
+      </p>
+    </div>
+  </div>
+</footer>

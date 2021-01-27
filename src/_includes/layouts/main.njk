@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-black">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="dns-prefetch" href="https://rsms.com" />
+
+    <title>{{ seo.title or title }} | {{ meta.siteName }}</title>
+    <meta
+      property="twitter:title"
+      content="{{ seo.title or title }} | {{ meta.siteName }}"
+    />
+    <meta
+      property="og:title"
+      content="{{ seo.title or title }} | {{ meta.siteName }}"
+    />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="{{ meta.description }}" />
+    <meta property="og:description" content="{{ meta.description }}" />
+    <meta name="twitter:description" value="{{ meta.description }}" />
+    <meta property="twitter:site" content="{{ meta.twitterUsername }}" />
+    <meta property="twitter:creator" content="{{ meta.twitterCreator }}" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:image:src" content="{{ meta.ogImageUrl }}" />
+    <meta property="og:image:secure_url" content="{{ meta.ogImageUrl }}" />
+    <meta property="og:image" content="{{ meta.ogImageUrl }}" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="twitter:image:width" content="1200" />
+    <meta property="twitter:image:height" content="630" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="{{ meta.siteName }}" />
+    <meta property="og:url" content="{{ meta.siteURL }}" />
+    <meta property="og:type" content="website" />
+    <meta name="keywords" value="{{ meta.keywords }}" />
+    <meta name="theme-color" content="#1A202C" />
+    <meta name="apple-mobile-web-app-title" content="{{ meta.appName }}" />
+    <meta name="application-name" content="{{ meta.appName }}" />
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="/assets/main.css" />
+    <!-- the inner fonts -->
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      html,
+      body {
+        font-family: "Inter var", sans-serif !important;
+      }
+    </style>
+  </head>
+  <body class="relative">
+    {{ content | safe }}
+  </body>
+</html>
