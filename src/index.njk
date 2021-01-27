@@ -23,7 +23,7 @@ title: Format Your WhatsApp Messages
       <textarea
         id="input"
         class="p-4 border-none outline-none rounded-lg w-full flex-1 block min-h-full bg-white dark:bg-whatsapp-input-bg-dark"
-        placeholder="To make something bold, use * e.g. *bold*"
+        placeholder="Type your WhatsApp message here..."
       ></textarea>
     </div>
     <div class="px-4 flex items-center opacity-40">
@@ -45,11 +45,7 @@ title: Format Your WhatsApp Messages
     <div
       id="output"
       class="max-w-sm whitespace-pre-wrap flex-1 bg-whatsapp-outgoing-chat-bg dark:bg-whatsapp-outgoing-chat-bg-dark dark:text-white p-4 rounded-lg"
-    >
-      <div class="opacity-80">
-        To make something bold, use * e.g.<b>bold</b>
-      </div>
-    </div>
+    ></div>
   </div>
   <div class="container text-center mx-auto pb-8">
     <div>
@@ -109,11 +105,32 @@ title: Format Your WhatsApp Messages
     return html;
   }
 
+  const STORAGE_KEY = "whatsapp_text";
+
+  function saveTextToStorage(text) {
+    window.sessionStorage.setItem(STORAGE_KEY, text);
+  }
+
+  function retrieveTextFromStorage() {
+    return window.sessionStorage.getItem(STORAGE_KEY);
+  }
+
+  function updateOutput(text) {
+    const html = whatsappPreview(text);
+    output.innerHTML = html;
+    saveTextToStorage(text);
+  }
+
   input.addEventListener("input", function (e) {
     const value = e.currentTarget.value;
-    const formatedText = whatsappPreview(value);
-    output.innerHTML = formatedText;
+    updateOutput(value);
   });
+  // init
+  const initial_text = retrieveTextFromStorage();
+  if (initial_text) {
+    input.value = initial_text;
+    updateOutput(initial_text);
+  }
 </script>
 <footer class="py-12 bg-coolGray-800 text-white">
   <div class="container mx-auto">
