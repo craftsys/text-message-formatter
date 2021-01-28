@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/craftsys/text-message-formatter/compare/v1.1.0...v1.2.0) (2021-01-28)
+
+
+### Features
+
+* **copy-to-clipboard:** add copy to clipboard ([cee2eba](https://github.com/craftsys/text-message-formatter/commit/cee2eba90dce0fb141ef45f6fd7923de0917cdd4))
+
 # [1.1.0](https://github.com/craftsys/text-message-formatter/compare/v1.0.0...v1.1.0) (2021-01-27)
 
 
