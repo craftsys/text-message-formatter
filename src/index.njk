@@ -16,35 +16,60 @@ title: Format Your WhatsApp Messages
     </ul>
   </header>
   <div
-    class="flex-1 flex mx-auto justify-center pb-8 container px-4"
+    class="flex-1 flex mx-auto justify-center pb-8 container px-4 text-sm"
     style="min-height: 300px"
   >
-    <div class="max-w-lg flex-1 flex">
+    <div class="flex-1 flex" style="max-width: 26rem">
       <textarea
         id="input"
         class="p-4 border-none outline-none rounded-lg w-full flex-1 block min-h-full bg-white dark:bg-whatsapp-input-bg-dark"
         placeholder="Type your WhatsApp message here..."
       ></textarea>
     </div>
-    <div class="px-4 flex items-center opacity-40">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        class="w-8 h-8"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-        />
-      </svg>
+    <div class="px-4 relative">
+      <div class="sticky top-0 space-y-8 pt-4 z-10">
+        <div>
+          <button
+            class="opacity-30 hover:opacity-90"
+            title="Copy to Clipboard"
+            id="copyToClipboard"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="w-6 h-6"
+            >
+              <path d="M8 2a1 1 0 000 2h2a1 1 0 100-2H8z" />
+              <path
+                d="M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="h-full flex items-center opacity-30 relative">
+        <div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              d="M8 5a1 1 0 100 2h5.586l-1.293 1.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L13.586 5H8zM12 15a1 1 0 100-2H6.414l1.293-1.293a1 1 0 10-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L6.414 15H12z"
+            />
+          </svg>
+        </div>
+      </div>
     </div>
     <div
       id="output"
-      class="max-w-sm whitespace-pre-wrap flex-1 bg-whatsapp-outgoing-chat-bg dark:bg-whatsapp-outgoing-chat-bg-dark dark:text-white p-4 rounded-lg"
+      class="whitespace-pre-wrap flex-1 bg-whatsapp-outgoing-chat-bg dark:bg-whatsapp-outgoing-chat-bg-dark dark:text-white p-4 rounded-lg"
+      style="
+        box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 0.5px 0px;
+        max-width: 24rem;
+      "
     ></div>
   </div>
   <div class="container text-center mx-auto pb-8">
@@ -67,8 +92,6 @@ title: Format Your WhatsApp Messages
   </div>
 </div>
 <script>
-  const input = document.getElementById("input");
-  const output = document.getElementById("output");
   const WHATSAPP_TAGS = [
     ["*", "b"],
     ["_", "i"],
@@ -117,10 +140,12 @@ title: Format Your WhatsApp Messages
 
   function updateOutput(text) {
     const html = whatsappPreview(text);
+    const output = document.getElementById("output");
     output.innerHTML = html;
     saveTextToStorage(text);
   }
 
+  const input = document.getElementById("input");
   input.addEventListener("input", function (e) {
     const value = e.currentTarget.value;
     updateOutput(value);
@@ -131,6 +156,22 @@ title: Format Your WhatsApp Messages
     input.value = initial_text;
     updateOutput(initial_text);
   }
+  // copy to clipboard
+  const btn = document.getElementById("copyToClipboard");
+  btn.addEventListener("click", function (e) {
+    if (!navigator.clipboard) {
+      alert("Copy to Clipboard not support by your browser.");
+      return;
+    }
+    navigator.clipboard.writeText(input.value).then(
+      function () {
+        alert("Copied to clipboard.");
+      },
+      function (err) {
+        alert("Copied to clipboard failed: " + String(err));
+      }
+    );
+  });
 </script>
 <footer class="py-12 bg-coolGray-800 text-white">
   <div class="container mx-auto">

@@ -1,5 +1,5 @@
 const appVersion = process.env.npm_package_version;
-const siteURL = "https://text-message-formatter.netlify.com";
+const siteURL = "https://text-message-formatter.netlify.app";
 module.exports = {
   siteURL,
   version: appVersion,
