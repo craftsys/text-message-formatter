@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/craftsys/text-message-formatter/compare/v1.2.1...v1.2.2) (2021-01-28)
+
+
+### Bug Fixes
+
+* **a11y:** add label to textarea ([6e8660c](https://github.com/craftsys/text-message-formatter/commit/6e8660cb3182ba8569cb50ca501b1709508636d6))
+
 ## [1.2.1](https://github.com/craftsys/text-message-formatter/compare/v1.2.0...v1.2.1) (2021-01-28)
 
 
