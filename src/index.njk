@@ -93,6 +93,7 @@ title: Format Your WhatsApp Messages
     </div>
   </div>
 </div>
+<script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
 <script>
   const WHATSAPP_TAGS = [
     ["*", "b"],
@@ -110,6 +111,9 @@ title: Format Your WhatsApp Messages
     WHATSAPP_TAGS.forEach(([tagSymbol, tagHtmlElm]) => {
       // replace all the tagSymbol with tagHtmlElm
       // e.g. *this* is *something* => <b>this</b> is <b>something</b>
+      // TODO: monospace don't work propertly
+      // - don't create about bold/italic/del
+      // - needs surrounding space
       let start = html.indexOf(tagSymbol),
         end = html.indexOf(tagSymbol, start + 1);
       while (start > -1 && end > -1) {
@@ -174,6 +178,57 @@ title: Format Your WhatsApp Messages
       }
     );
   });
+
+  // enable hot keys for textarea
+  hotkeys.filter = function (event) {
+    var tagName = (event.target || event.srcElement).tagName;
+    return tagName == "TEXTAREA";
+  };
+
+  hotkeys(
+    "command+b,ctrl+b,command+i,ctrl+i,command+d,ctrl+d,command+m,ctrl+m",
+    function (event, handler) {
+      switch (handler.key) {
+        case "command+b":
+        case "ctrl+b":
+          insertFormatTags(input, "*");
+          break;
+        case "command+i":
+        case "ctrl+i":
+          insertFormatTags(input, "_");
+          break;
+        default:
+      }
+    }
+  );
+
+  function insertFormatTags(inputField, tag) {
+    const selection = getSelection(inputField);
+    if (!selection) {
+      inputField.value += wrapper * 2;
+      return;
+    }
+    const startPos = selection.start;
+    const endPos = selection.end;
+    inputField.value =
+      inputField.value.substring(0, startPos) +
+      tag +
+      inputField.value.substring(startPos, endPos) +
+      tag +
+      inputField.value.substring(endPos, inputField.value.length);
+    setSelection(input, startPos + tag.length, endPos + tag.length);
+  }
+
+  function getSelection(elm) {
+    if (elm.selectionStart || elm.selectionStart == "0") {
+      return { start: elm.selectionStart, end: elm.selectionEnd };
+    }
+    return false;
+  }
+  function setSelection(elm, start, end) {
+    elm.selectionStart = start;
+    elm.selectionEnd = end;
+  }
 </script>
 <footer class="py-12 bg-coolGray-800 text-white">
   <div class="container mx-auto">
