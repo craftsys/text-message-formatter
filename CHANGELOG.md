@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/craftsys/text-message-formatter/compare/v1.2.2...v1.3.0) (2021-02-04)
+
+
+### Features
+
+* **hot-keys:** add bold and italic keys ([1135ed4](https://github.com/craftsys/text-message-formatter/commit/1135ed4190a4fd646fd6f94e917f1f90ef8080c0))
+
 ## [1.2.2](https://github.com/craftsys/text-message-formatter/compare/v1.2.1...v1.2.2) (2021-01-28)
 
 
