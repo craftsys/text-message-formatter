@@ -21,7 +21,7 @@ title: Format Your WhatsApp Messages
   >
     <div class="flex-1 flex" style="max-width: 26rem">
       <textarea
-        id="input"
+        id="raw_text"
         aria-label="Type your WhatsApp message here"
         class="p-4 border-none outline-none rounded-lg w-full flex-1 block min-h-full bg-white dark:bg-whatsapp-input-bg-dark"
         placeholder="Type your WhatsApp message here..."
@@ -64,14 +64,16 @@ title: Format Your WhatsApp Messages
         </div>
       </div>
     </div>
-    <div
-      id="output"
-      class="whitespace-pre-wrap flex-1 bg-whatsapp-outgoing-chat-bg dark:bg-whatsapp-outgoing-chat-bg-dark dark:text-white p-4 rounded-lg"
+    <output
+      for="raw_text"
+      id="message_preview"
+      name="message_preview"
+      class="whitespace-pre-wrap block flex-1 bg-whatsapp-outgoing-chat-bg dark:bg-whatsapp-outgoing-chat-bg-dark dark:text-white p-4 rounded-lg"
       style="
         box-shadow: rgba(0, 0, 0, 0.13) 0px 1px 0.5px 0px;
         max-width: 24rem;
       "
-    ></div>
+    ></output>
   </div>
   <div class="container text-center mx-auto pb-8">
     <div>
@@ -91,6 +93,31 @@ title: Format Your WhatsApp Messages
         operations.
       </p>
     </div>
+  </div>
+</div>
+<div class="bg-gray-900 text-white">
+  <div class="container mx-auto py-12 px-4">
+    <h2 class="text-center text-2xl mb-4">Common Formatting Issues</h2>
+    <ol class="list-decimal pl-4 text-sm space-y-2">
+      <li>
+        There should not be any space between opening/closing characters (*,_,~)
+        and the inner text. For example: <mark>* bold*</mark> will NOT work as
+        there is space between * and the first character. You can provide spaces
+        between the text as necessary but not surrounding. E.g. *this will work*
+        but *this will not *
+      </li>
+      <li>
+        Any other formatting inside monospace (```) text won't work. For
+        example: <mark>```I am *bold* and monospace```</mark> will NOT make the
+        text bold, instead it will print the * as it is like this:
+        <code>I am *bold* and monospace</code>)
+      </li>
+      <li>
+        When using ```, there should be a space after the closing tag. For
+        example, <mark>```this is something```text</mark> will NOT work because
+        there should be a space after closing ``` (between ``` and text).
+      </li>
+    </ol>
   </div>
 </div>
 <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -117,16 +144,33 @@ title: Format Your WhatsApp Messages
       let start = html.indexOf(tagSymbol),
         end = html.indexOf(tagSymbol, start + 1);
       while (start > -1 && end > -1) {
-        html =
-          html.substring(0, start) +
-          "<" +
-          tagHtmlElm +
-          ">" +
-          html.substring(start + tagSymbol.length, end) +
-          "</" +
-          tagHtmlElm +
-          ">" +
-          html.substring(end + tagSymbol.length);
+        let innertPart = html.substring(start + tagSymbol.length, end);
+        let canFormat = true;
+        if (["*", "_", "~"].indexOf(tagSymbol) !== -1) {
+          // there can not be a surrounding space inside *,_,~
+          if (
+            innertPart.charAt(0) === " " ||
+            innertPart.charAt(innertPart.length - 1) === " "
+          ) {
+            canFormat = false;
+          }
+          // also, monospace dominates over *,_,~
+          if (innertPart.indexOf("```") !== -1) {
+            canFormat = false;
+          }
+        }
+        if (canFormat) {
+          html =
+            html.substring(0, start) +
+            "<" +
+            tagHtmlElm +
+            ">" +
+            innertPart +
+            "</" +
+            tagHtmlElm +
+            ">" +
+            html.substring(end + tagSymbol.length);
+        }
         start = html.indexOf(tagSymbol, end + 1);
         end = html.indexOf(tagSymbol, start + 1);
       }
@@ -146,12 +190,12 @@ title: Format Your WhatsApp Messages
 
   function updateOutput(text) {
     const html = whatsappPreview(text);
-    const output = document.getElementById("output");
+    const output = document.getElementById("message_preview");
     output.innerHTML = html;
     saveTextToStorage(text);
   }
 
-  const input = document.getElementById("input");
+  const input = document.getElementById("raw_text");
   input.addEventListener("input", function (e) {
     const value = e.currentTarget.value;
     updateOutput(value);
