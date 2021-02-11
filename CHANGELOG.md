@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/craftsys/text-message-formatter/compare/v1.3.0...v1.4.0) (2021-02-11)
+
+
+### Features
+
+* **issues:** add basic issues when formatting ([a5072ea](https://github.com/craftsys/text-message-formatter/commit/a5072eaa9a108822a631f30336d50d7cb8082834))
+
 # [1.3.0](https://github.com/craftsys/text-message-formatter/compare/v1.2.2...v1.3.0) (2021-02-04)
 
 
