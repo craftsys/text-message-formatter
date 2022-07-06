@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/craftsys/text-message-formatter/compare/v1.4.1...v1.4.2) (2022-07-06)
+
+
+### Bug Fixes
+
+* **html:** improve inline surrounding ([786ee2f](https://github.com/craftsys/text-message-formatter/commit/786ee2fd80b0ef3200c0a3a5ac71614319579b34))
+
 ## [1.4.1](https://github.com/craftsys/text-message-formatter/compare/v1.4.0...v1.4.1) (2022-07-06)
 
 
