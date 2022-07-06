@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/craftsys/text-message-formatter/compare/v1.4.0...v1.4.1) (2022-07-06)
+
+
+### Bug Fixes
+
+* **html:** handle spaces for inline ([907c04a](https://github.com/craftsys/text-message-formatter/commit/907c04a01bc3bf283563dcad4802952858acd21e))
+
 # [1.4.0](https://github.com/craftsys/text-message-formatter/compare/v1.3.0...v1.4.0) (2021-02-11)
 
 
