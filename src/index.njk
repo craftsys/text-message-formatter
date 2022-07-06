@@ -164,9 +164,9 @@ title: Format Your WhatsApp Messages
             if (
               // if these is a space after
               innertPart.charAt(0) === " " ||
-              // or there is no space before
+              // or there is alphanumeric character before
               (start !== 0 &&
-                !new RegExp(/[\s\n]/).test(html.charAt(start - tagSymbol.length)))
+                new RegExp(/[a-z0-9]/, "i").test(html.charAt(start - tagSymbol.length)))
             ) {
               // skip the start
               start = end
@@ -176,9 +176,9 @@ title: Format Your WhatsApp Messages
             if (
               // if these is a space before
               innertPart.charAt(innertPart.length - tagSymbol.length) === " " ||
-              // if these is no space after
+              // if these is alphanumeric character after
               (end !== html.length - tagSymbol.length &&
-                !new RegExp(/[\s\n]/).test(html.charAt(end + tagSymbol.length)))
+                new RegExp(/[a-z0-9]/, 'i').test(html.charAt(end + tagSymbol.length)))
             ) {
               // skip the closing
               end = html.indexOf(tagSymbol, end + tagSymbol.length)
@@ -212,8 +212,9 @@ title: Format Your WhatsApp Messages
       }
     })
     return html
-    .replace(/\n/g, "<br />")
+      .replace(/\n/g, "<br />")
   }
+
 
   const STORAGE_KEY = "whatsapp_text";
 
