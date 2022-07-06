@@ -125,38 +125,74 @@ title: Format Your WhatsApp Messages
   const WHATSAPP_TAGS = [
     ["*", "b"],
     ["_", "i"],
-    ["~", "s"],
+    ["~", "del"],
     ["```", "code"],
-  ];
+  ]
   function whatsappPreview(text) {
     // sanitise text
     let html = text
-      .replace(/&/g, "&")
       .replace(/>/g, "&gt;")
       .replace(/</g, "&lt;")
-      .replace(/\n/g, "<br />");
+      .trim()
     WHATSAPP_TAGS.forEach(([tagSymbol, tagHtmlElm]) => {
       // replace all the tagSymbol with tagHtmlElm
       // e.g. *this* is *something* => <b>this</b> is <b>something</b>
-      // TODO: monospace don't work propertly
-      // - don't create about bold/italic/del
-      // - needs surrounding space
       let start = html.indexOf(tagSymbol),
-        end = html.indexOf(tagSymbol, start + 1);
+        end = html.indexOf(tagSymbol, start + tagSymbol.length)
       while (start > -1 && end > -1) {
-        let innertPart = html.substring(start + tagSymbol.length, end);
-        let canFormat = true;
+        const innertPart = html.substring(start + tagSymbol.length, end)
+        let canFormat = true
         if (["*", "_", "~"].indexOf(tagSymbol) !== -1) {
-          // there can not be a surrounding space inside *,_,~
-          if (
-            innertPart.charAt(0) === " " ||
-            innertPart.charAt(innertPart.length - 1) === " "
-          ) {
-            canFormat = false;
+          if (innertPart.indexOf("\n") !== -1) {
+            canFormat = false
           }
-          // also, monospace dominates over *,_,~
+          // also, monospace pair dominates over *,_,~
           if (innertPart.indexOf("```") !== -1) {
-            canFormat = false;
+            if (innertPart.indexOf("```", innertPart.indexOf("```") + 3) !== -1) {
+              // move to next
+              canFormat = false
+            }
+          }
+          if (canFormat) {
+            if (end === start + tagSymbol.length) {
+              // nothing in-between
+              // skip the closing
+              end = html.indexOf(tagSymbol, end + tagSymbol.length)
+              continue
+            }
+            // there can not be a surrounding space inside *,_,~
+            if (
+              // if these is a space after
+              innertPart.charAt(0) === " " ||
+              // or there is no space before
+              (start !== 0 &&
+                !new RegExp(/[\s\n]/).test(html.charAt(start - tagSymbol.length)))
+            ) {
+              // skip the start
+              start = end
+              end = html.indexOf(tagSymbol, start + tagSymbol.length)
+              continue
+            }
+            if (
+              // if these is a space before
+              innertPart.charAt(innertPart.length - tagSymbol.length) === " " ||
+              // if these is no space after
+              (end !== html.length - tagSymbol.length &&
+                !new RegExp(/[\s\n]/).test(html.charAt(end + tagSymbol.length)))
+            ) {
+              // skip the closing
+              end = html.indexOf(tagSymbol, end + tagSymbol.length)
+              continue
+            }
+          }
+        } else {
+          // ```
+          if (end === start + tagSymbol.length) {
+            // nothing in-between
+            // skip the opening
+            start = end
+            end = html.indexOf(tagSymbol, start + tagSymbol.length)
+            continue
           }
         }
         if (canFormat) {
@@ -169,13 +205,14 @@ title: Format Your WhatsApp Messages
             "</" +
             tagHtmlElm +
             ">" +
-            html.substring(end + tagSymbol.length);
+            html.substring(end + tagSymbol.length)
         }
-        start = html.indexOf(tagSymbol, end + 1);
-        end = html.indexOf(tagSymbol, start + 1);
+        start = html.indexOf(tagSymbol, end + tagSymbol.length)
+        end = html.indexOf(tagSymbol, start + tagSymbol.length)
       }
-    });
-    return html;
+    })
+    return html
+    .replace(/\n/g, "<br />")
   }
 
   const STORAGE_KEY = "whatsapp_text";
