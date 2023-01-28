@@ -1,6 +1,6 @@
 {
   "name": "@craftsys/text-message-formatter",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Text Message Formatter for WhatsApp",
   "private": true,
   "bugs": {

@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/craftsys/text-message-formatter/compare/v1.4.2...v1.4.3) (2023-01-28)
+
+
+### Bug Fixes
+
+* **new-line:** new line between basic formatter not working ([e861060](https://github.com/craftsys/text-message-formatter/commit/e8610605536cc975a39498d5c2cfa5e2a03470de))
+
 ## [1.4.2](https://github.com/craftsys/text-message-formatter/compare/v1.4.1...v1.4.2) (2022-07-06)
 
 
