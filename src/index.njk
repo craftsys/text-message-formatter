@@ -143,15 +143,18 @@ title: Format Your WhatsApp Messages
         const innertPart = html.substring(start + tagSymbol.length, end)
         let canFormat = true
         if (["*", "_", "~"].indexOf(tagSymbol) !== -1) {
-          if (innertPart.indexOf("\n") !== -1) {
-            canFormat = false
-          }
           // also, monospace pair dominates over *,_,~
           if (innertPart.indexOf("```") !== -1) {
             if (innertPart.indexOf("```", innertPart.indexOf("```") + 3) !== -1) {
               // move to next
               canFormat = false
             }
+          }
+          if (innertPart.indexOf("\n") !== -1) {
+            // skip the start
+            start = end
+            end = html.indexOf(tagSymbol, start + tagSymbol.length)
+            continue
           }
           if (canFormat) {
             if (end === start + tagSymbol.length) {
