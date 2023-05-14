@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/craftsys/text-message-formatter/compare/v1.4.3...v1.5.0) (2023-05-14)
+
+
+### Features
+
+* **storage:** store in local storage as well ([99413af](https://github.com/craftsys/text-message-formatter/commit/99413af9fc1243c25b50a99129d426d8088b4ca9))
+
 ## [1.4.3](https://github.com/craftsys/text-message-formatter/compare/v1.4.2...v1.4.3) (2023-01-28)
 
 
