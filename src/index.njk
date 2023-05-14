@@ -223,10 +223,11 @@ title: Format Your WhatsApp Messages
 
   function saveTextToStorage(text) {
     window.sessionStorage.setItem(STORAGE_KEY, text);
+    window.localStorage.setItem(STORAGE_KEY, text);
   }
 
   function retrieveTextFromStorage() {
-    return window.sessionStorage.getItem(STORAGE_KEY);
+    return window.sessionStorage.getItem(STORAGE_KEY) || window.localStorage.getItem(STORAGE_KEY);
   }
 
   function updateOutput(text) {
