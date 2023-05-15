@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/craftsys/text-message-formatter/compare/v1.6.0...v1.6.1) (2023-05-15)
+
+
+### Bug Fixes
+
+* **engine:** set the node version ([0dea98e](https://github.com/craftsys/text-message-formatter/commit/0dea98e0193176ec856cb1b4aed9197d64fe8434))
+
 # [1.6.0](https://github.com/craftsys/text-message-formatter/compare/v1.5.0...v1.6.0) (2023-05-15)
 
 
