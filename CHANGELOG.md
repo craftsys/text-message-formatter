@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/craftsys/text-message-formatter/compare/v1.5.0...v1.6.0) (2023-05-15)
+
+
+### Features
+
+* **share-link:** add link share ([8d87656](https://github.com/craftsys/text-message-formatter/commit/8d87656529f7499c98ddd7f56c335e52343a8484))
+
 # [1.5.0](https://github.com/craftsys/text-message-formatter/compare/v1.4.3...v1.5.0) (2023-05-14)
 
 
