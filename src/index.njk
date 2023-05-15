@@ -29,7 +29,7 @@ title: Format Your WhatsApp Messages
     </div>
     <div class="px-4 relative">
       <div class="sticky top-0 space-y-8 pt-4 z-10">
-        <div>
+        <div class="gap-8 flex flex-col">
           <button
             class="opacity-30 hover:opacity-90"
             title="Copy to Clipboard"
@@ -45,6 +45,15 @@ title: Format Your WhatsApp Messages
               <path
                 d="M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z"
               />
+            </svg>
+          </button>
+          <button
+            class="opacity-30 hover:opacity-90"
+            title="Share Link"
+            id="shareLink"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+              <path d="M13 4.5a2.5 2.5 0 11.702 1.737L6.97 9.604a2.518 2.518 0 010 .792l6.733 3.367a2.5 2.5 0 11-.671 1.341l-6.733-3.367a2.5 2.5 0 110-3.475l6.733-3.366A2.52 2.52 0 0113 4.5z" />
             </svg>
           </button>
         </div>
@@ -121,7 +130,11 @@ title: Format Your WhatsApp Messages
   </div>
 </div>
 <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
+<script src="https://unpkg.com/lz-string@1.5.0/libs/lz-string.min.js"></script>
+
 <script>
+(function () {
+
   const WHATSAPP_TAGS = [
     ["*", "b"],
     ["_", "i"],
@@ -224,10 +237,40 @@ title: Format Your WhatsApp Messages
   function saveTextToStorage(text) {
     window.sessionStorage.setItem(STORAGE_KEY, text);
     window.localStorage.setItem(STORAGE_KEY, text);
+    // remove msg from url
+    const hash = window.location.hash
+    if (/^#msg\//.test(hash)) {
+      window.history.replaceState({}, "", window.location.pathname + window.location.search)
+    }
   }
 
   function retrieveTextFromStorage() {
     return window.sessionStorage.getItem(STORAGE_KEY) || window.localStorage.getItem(STORAGE_KEY);
+  }
+
+  function retrieveTextFromUrl() {
+    const hash = window.location.hash
+    const content = hash ?  LZString.decompressFromEncodedURIComponent(hash.replace(/^#msg\//, '')) : '';
+    return content;
+  }
+
+  function shareLink(text) {
+    const compressed = LZString.compressToEncodedURIComponent(text);
+    const hash = compressed;
+    const newURL = '#msg/' + hash;
+    window.history.replaceState({}, "", newURL)
+    if (!navigator.clipboard) {
+      alert("Copy to Clipboard not support by your browser. Please manualy copy the url and share");
+      return;
+    }
+    navigator.clipboard.writeText(window.location.href).then(
+      function () {
+        alert("Copied URL to clipboard.");
+      },
+      function (err) {
+        alert("Copied to clipboard failed: " + String(err));
+      }
+    );
   }
 
   function updateOutput(text) {
@@ -243,14 +286,14 @@ title: Format Your WhatsApp Messages
     updateOutput(value);
   });
   // init
-  const initial_text = retrieveTextFromStorage();
+  const initial_text = retrieveTextFromUrl() || retrieveTextFromStorage();
   if (initial_text) {
     input.value = initial_text;
     updateOutput(initial_text);
   }
   // copy to clipboard
-  const btn = document.getElementById("copyToClipboard");
-  btn.addEventListener("click", function (e) {
+  const copyToClipboardBtnElm = document.getElementById("copyToClipboard");
+  copyToClipboardBtnElm.addEventListener("click", function (e) {
     if (!navigator.clipboard) {
       alert("Copy to Clipboard not support by your browser.");
       return;
@@ -264,6 +307,13 @@ title: Format Your WhatsApp Messages
       }
     );
   });
+  
+  // share link
+  const shareLinkBtnElm = document.getElementById("shareLink");
+  shareLinkBtnElm.addEventListener("click", function (e) {
+    shareLink(input.value)
+  });
+
 
   // enable hot keys for textarea
   hotkeys.filter = function (event) {
@@ -315,6 +365,7 @@ title: Format Your WhatsApp Messages
     elm.selectionStart = start;
     elm.selectionEnd = end;
   }
+})();
 </script>
 <footer class="py-12 bg-coolGray-800 text-white">
   <div class="container mx-auto">
